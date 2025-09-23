@@ -1,336 +1,229 @@
-<p align="center">
-  <img src="assets/jabline.png" alt="Jabline Logo" width="200">
-</p>
-
-<h1 align="center">🚀 Jabline Programming Language</h1>
-
-**A modern, powerful, and extensible interpreted programming language with a comprehensive standard library.**
-
-[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/Jabline-lang/Jabline)
-[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![Go](https://img.shields.io/badge/go-1.24.6-00ADD8.svg)](https://golang.org/)
-
-## 🌟 Overview
-
-Jabline is a production-ready interpreted programming language that combines modern syntax with powerful built-in capabilities. Designed for rapid development, system integration, and real-world applications.
-
-### ✨ Key Features
-
-- **🎯 Modern Syntax**: Clean, expressive syntax inspired by JavaScript and Python
-- **⚡ Fast Execution**: Optimized interpreter with efficient object system
-- **📚 Rich Standard Library**: 60+ built-in functions for I/O, networking, data processing
-- **🔧 System Integration**: File operations, HTTP client, environment variables
-- **🧪 Built-in Testing**: Complete testing framework with assertions
-- **📦 Module System**: Import/export with selective imports
-- **🔒 Production Ready**: Error handling, type safety, professional features
-
-## 🚀 Quick Start
-
-### 🔧 Automated Installation (Recommended)
-
-The easiest way to install Jabline with automatic system integration:
-
-```bash
-# Clone the repository
-git clone --depth 1 https://github.com/Jabline-lang/Jabline && cd Jabline
-
-# Run the automated installer
-cd builder && go run .
-```
-
-### Hello World
-
-```jabline
-echo("Hello, World!");
-
-let name = "Jabline";
-echo(`Welcome to ${name} programming!`);
-```
-
-### Run Your First Program
-
-```bash
-jabline run examples/hello_world.jb
-```
-
-## 📖 Language Features
-
-### Variables and Types
-
-```jabline
-let name = "Alice";
-let age = 30;
-let active = true;
-let numbers = [1, 2, 3, 4, 5];
-let config = {"debug": true, "port": 8080};
-```
-
-### Functions and Arrow Functions
-
-```jabline
-// Traditional function
-fn greet(name) {
-    return "Hello, " + name + "!";
-}
-
-// Arrow function
-let double = x => x * 2;
-let add = (a, b) => a + b;
-```
-
-### Control Flow
-
-```jabline
-// Conditionals
-if (age >= 18) {
-    echo("Adult");
-} else {
-    echo("Minor");
-}
-
-// Loops
-for (let i = 0; i < 5; i++) {
-    echo("Count: " + i);
-}
-
-// For-each
-for (item in collection) {
-    echo(item);
-}
-```
-
-### Error Handling
-
-```jabline
-try {
-    let data = readFile("config.json");
-    let config = parse(data);
-} catch (error) {
-    echo("Error: " + error);
-}
-```
-
-## 🛠️ Standard Library
-
-### File System Operations
-
-```jabline
-// File operations
-let content = readFile("document.txt");
-writeFile("output.txt", "Hello World!");
-let exists = fileExists("config.json");
-
-// Directory operations
-createDir("project");
-let files = listDir(".");
-let currentDir = getWorkingDir();
-```
-
-### HTTP Client
-
-```jabline
-// GET request
-let response = httpGet("https://api.example.com/users");
-if (response["status"] == 200) {
-    let users = parse(response["body"]);
-    echo("Found " + len(users) + " users");
-}
-
-// POST request
-let data = stringify({"name": "John", "email": "john@example.com"});
-let result = httpPost("https://api.example.com/users", data);
-```
-
-### Data Processing
-
-```jabline
-import { sum, sort, findIndex } from "arrays";
-import { capitalize, isValidEmail } from "strings_minimal";
-import { abs, max, pow } from "math";
-
-let numbers = [15, 8, 42, 3, 20];
-let total = sum(numbers);           // 88
-let sorted = sort(numbers);         // [3, 8, 15, 20, 42]
-let power = pow(2, 8);             // 256
-```
-
-### JSON Processing
-
-```jabline
-import { stringify, parse, isValid } from "data/json";
-
-let data = {"name": "Alice", "age": 30, "skills": ["Go", "JavaScript"]};
-let json = stringify(data);
-let parsed = parse(json);
-let valid = isValid(json);
-```
-
-### Testing Framework
-
-```jabline
-import { describe, it, assertEqual, assertTrue } from "testing/assert";
-
-describe("Math Operations", function() {
-    it("should add numbers correctly", function() {
-        assertEqual(2 + 3, 5, "Addition should work");
-    });
-
-    it("should handle arrays", function() {
-        assertTrue(len([1, 2, 3]) == 3, "Array length should be 3");
-    });
-});
-```
-
-### Date and Time
-
-```jabline
-import { createDate, formatDate, isLeapYear } from "time/datetime";
-
-let today = createDate(15, 3, 2024);
-echo("Today: " + formatDate(today));          // "15/03/2024"
-echo("Is leap year: " + isLeapYear(2024));    // true
-
-let timestamp = now();
-let formatted = formatTime(timestamp, "YYYY-MM-DD HH:mm:ss");
-```
-
-## 📚 Documentation
-
-- [Standard Library Guide](STDLIB_REFERENCE.md) - Complete API reference
-- [Contributing Guidelines](CONTRIBUTING.md) - How to contribute
-- [Examples](examples/) - Working code examples
-
-## 🎯 Use Cases
-
-### Web API Client
-
-```jabline
-import { stringify, parse } from "data/json";
-
-fn fetchUserData(userId) {
-    let url = `https://api.example.com/users/${userId}`;
-    let response = httpGet(url);
-
-    if (response["status"] == 200) {
-        return parse(response["body"]);
-    } else {
-        throw "Failed to fetch user data";
-    }
-}
-
-let user = fetchUserData(123);
-echo("User: " + user["name"]);
-```
-
-### Configuration Management
-
-```jabline
-fn loadConfig() {
-    let configFile = "app.json";
-
-    if (!fileExists(configFile)) {
-        let defaultConfig = {
-            "port": 8080,
-            "debug": false,
-            "database_url": getEnv("DATABASE_URL") ?? "sqlite://app.db"
-        };
-        writeFile(configFile, stringify(defaultConfig));
-        return defaultConfig;
-    }
-
-    let content = readFile(configFile);
-    return parse(content);
-}
-
-let config = loadConfig();
-echo("Starting server on port " + config["port"]);
-```
-
-### Data Analysis
-
-```jabline
-import { sum, sort, max, min } from "arrays";
-
-fn analyzeData(dataset) {
-    return {
-        "count": len(dataset),
-        "sum": sum(dataset),
-        "average": sum(dataset) / len(dataset),
-        "max": max(dataset),
-        "min": min(dataset),
-        "sorted": sort(dataset)
-    };
-}
-
-let sales = [250, 180, 420, 90, 350];
-let analysis = analyzeData(sales);
-echo("Analysis: " + stringify(analysis));
-```
-
-## 🔧 Built-in Functions
-
-### I/O Operations
-- `readFile(filename)` - Read file contents
-- `writeFile(filename, content)` - Write to file
-- `fileExists(filename)` - Check file existence
-- `createDir(dirname)` - Create directory
-- `listDir(dirname)` - List directory contents
-
-### Network Operations
-- `httpGet(url)` - HTTP GET request
-- `httpPost(url, data)` - HTTP POST request
-
-### System Integration
-- `getEnv(key)` - Get environment variable
-- `setEnv(key, value)` - Set environment variable
-- `getWorkingDir()` - Get current directory
-- `now()` - Current timestamp
-- `sleep(milliseconds)` - Pause execution
-
-### Path Utilities
-- `pathJoin(...)` - Join path segments
-- `pathBase(path)` - Extract filename
-- `pathDir(path)` - Extract directory
-
-## 🌐 Standard Library Modules
-
-- **math** - Mathematical operations and constants
-- **strings_minimal** - String processing and validation
-- **arrays** - Array manipulation and utilities
-- **time/datetime** - Date and time operations
-- **data/json** - JSON serialization and parsing
-- **data/collections** - Functional programming utilities
-- **testing/assert** - Testing framework with assertions
-- **crypto/hash** - Hashing and security functions
-- **os/env** - Environment and system utilities
-
-## 🎨 Modern Features
-
-### Template Literals
-```jabline
-let name = "World";
-let greeting = `Hello ${name}!`;
-let calculation = `Result: ${2 + 3}`;
-```
-
-### Nullish Coalescing
-```jabline
-let user = getEnv("USER") ?? "guest";
-let port = config?.port ?? 3000;
-```
-
-### Optional Chaining
-```jabline
-let avatar = user?.profile?.avatar ?? "default.jpg";
-```
-
-## 📄 License
-
-This project is licensed under the MIT License. See [LICENSE](LICENSE) file for details.
+<div align="center">
+  <img src="assets/jabline.png" alt="Jabline Logo" width="100">
+  
+  # **Jabline Programming Language**
+  
+  *Un lenguaje de programación interpretado simple y expresivo*
+  
+  [![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/Jabline-lang/Jabline)
+  [![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/Jabline-lang/Jabline/blob/main/LICENSE)
+  [![Go](https://img.shields.io/badge/go-1.24.6-00ADD8.svg)](https://golang.org/)
+</div>
 
 ---
 
-**Jabline v1.0.0** - *From prototype to production-ready programming language*
+## 🎯 **¿Qué es Jabline?**
 
-*Built with ❤️ for modern development*
+**Jabline** es un lenguaje de programación interpretado diseñado para ser simple, expresivo y fácil de aprender. Con una sintaxis familiar inspirada en JavaScript y Python, Jabline permite a los desarrolladores crear scripts y programas de manera intuitiva.
 
+### ✨ **Características Principales**
+
+- **📝 Sintaxis Simple** - Fácil de leer y escribir
+- **🔧 Funciones Built-in** - Más de 30 funciones integradas listas para usar
+- **📁 Operaciones de Archivos** - Lectura, escritura y manipulación de archivos
+- **🌐 Cliente HTTP** - Peticiones GET y POST integradas
+- **📦 Sistema de Módulos** - Importa y exporta funciones entre archivos
+- **⚡ Ejecución Rápida** - Intérprete optimizado escrito en Go
+
+---
+
+## 🚀 **Ejemplo Rápido**
+
+```jabline
+// Variables y tipos básicos
+let nombre = "Jabline";
+let version = 1.0;
+let activo = true;
+
+echo(`¡Bienvenido a ${nombre} v${version}!`);
+
+// Funciones
+fn saludar(usuario) {
+    return `Hola ${usuario}, ¿cómo estás?`;
+}
+
+echo(saludar("Desarrollador"));
+
+// Arrays y operaciones
+let numeros = [1, 2, 3, 4, 5];
+echo("Longitud: " + len(numeros));
+echo("Primer elemento: " + first(numeros));
+```
+
+---
+
+## 🛠️ **Funcionalidades Implementadas**
+
+### **Variables y Tipos**
+```jabline
+let texto = "Hola mundo";
+let numero = 42;
+let decimal = 3.14;
+let booleano = true;
+let lista = [1, 2, 3];
+let objeto = {"clave": "valor"};
+```
+
+### **Funciones y Control de Flujo**
+```jabline
+fn calcular(a, b) {
+    if (a > b) {
+        return a + b;
+    } else {
+        return a - b;
+    }
+}
+
+// Bucles
+for (let i = 0; i < 5; i++) {
+    echo("Número: " + i);
+}
+```
+
+### **Operaciones de Archivos**
+```jabline
+// Leer y escribir archivos
+let contenido = readFile("datos.txt");
+writeFile("salida.txt", "Nuevo contenido");
+
+// Verificar existencia
+if (fileExists("config.json")) {
+    echo("Archivo encontrado");
+}
+```
+
+### **Peticiones HTTP**
+```jabline
+// GET request
+let respuesta = httpGet("https://api.ejemplo.com/datos");
+echo("Status: " + respuesta["status"]);
+echo("Contenido: " + respuesta["body"]);
+
+// POST request
+let datos = '{"nombre": "Juan"}';
+let resultado = httpPost("https://api.ejemplo.com/usuarios", datos);
+```
+
+---
+
+## 📚 **Funciones Built-in Disponibles**
+
+### **Básicas**
+- `echo(valor)` - Imprime valores
+- `len(objeto)` - Longitud de arrays/strings
+- `type(objeto)` - Tipo de un objeto
+
+### **Strings**
+- `upper(texto)`, `lower(texto)` - Convertir mayúsculas/minúsculas
+- `split(texto, separador)` - Dividir string
+- `join(array, separador)` - Unir array en string
+- `contains(texto, buscar)` - Verificar contenido
+- `replace(texto, buscar, reemplazar)` - Reemplazar texto
+
+### **Arrays**
+- `push(array, elemento)` - Agregar elemento
+- `pop(array)` - Remover último elemento
+- `first(array)`, `last(array)` - Primer/último elemento
+- `reverse(array)` - Invertir array
+
+### **Archivos y Sistema**
+- `readFile(archivo)`, `writeFile(archivo, contenido)`
+- `fileExists(archivo)`, `deleteFile(archivo)`
+- `createDir(directorio)`, `listDir(directorio)`
+- `getEnv(variable)`, `setEnv(variable, valor)`
+
+### **HTTP y Red**
+- `httpGet(url)`, `httpPost(url, datos)`
+
+### **Tiempo**
+- `now()` - Timestamp actual
+- `sleep(milisegundos)` - Pausar ejecución
+- `formatTime(timestamp, formato)` - Formatear fecha
+
+---
+
+## 📦 **Repositorios**
+
+| Repositorio | Descripción | Estado |
+|-------------|-------------|--------|
+| **[Jabline](https://github.com/Jabline-lang/Jabline)** | Intérprete principal del lenguaje | ✅ Activo |
+
+---
+
+## 🏃 **Comenzar**
+
+### **Instalación**
+```bash
+# Clonar el repositorio
+git clone https://github.com/Jabline-lang/Jabline.git
+cd Jabline
+
+# Compilar el intérprete
+cd builder && go run .
+
+# Ejecutar un programa
+jabline run ejemplo.jb
+```
+
+### **Tu Primer Programa**
+```jabline
+// Guarda esto como hola.jb
+let mensaje = "¡Hola desde Jabline!";
+echo(mensaje);
+
+fn suma(a, b) {
+    return a + b;
+}
+
+echo("2 + 3 = " + suma(2, 3));
+```
+
+```bash
+# Ejecutar
+jabline run hola.jb
+```
+
+---
+
+## 🎯 **Casos de Uso**
+
+- **🔧 Scripts de Automatización** - Tareas del sistema y procesamiento de archivos
+- **🌐 APIs Simples** - Cliente HTTP para consumir servicios web
+- **📊 Procesamiento de Datos** - Manipulación básica de texto y números
+- **🧪 Prototipado Rápido** - Desarrollo y testing de ideas
+- **📚 Aprendizaje** - Introducción a conceptos de programación
+
+---
+
+## 🤝 **Contribuir**
+
+¡Las contribuciones son bienvenidas! 
+
+- **🐛 [Reportar Bugs](https://github.com/Jabline-lang/Jabline/issues)** - Ayúdanos a mejorar
+- **💡 [Sugerir Features](https://github.com/Jabline-lang/Jabline/discussions)** - Comparte tus ideas
+- **🔄 [Pull Requests](https://github.com/Jabline-lang/Jabline/pulls)** - Contribuye código
+
+---
+
+## 📋 **Roadmap**
+
+- ✅ **v1.0** - Lenguaje base con funciones esenciales
+- 🚧 **v1.1** - Más módulos de la librería estándar
+- 📋 **v1.2** - Mejor manejo de errores y debugging
+- 🎯 **v2.0** - Optimizaciones de rendimiento
+
+---
+
+## 📄 **Licencia**
+
+Jabline está licenciado bajo la [Licencia MIT](https://github.com/Jabline-lang/Jabline/blob/main/LICENSE).
+
+---
+
+<div align="center">
+  
+**Creado con ❤️ para la comunidad de desarrolladores**
+
+[Comenzar](https://github.com/Jabline-lang/Jabline#instalación) • [Ejemplos](https://github.com/Jabline-lang/Jabline/tree/main/examples) • [Documentación](https://github.com/Jabline-lang/Jabline/blob/main/STDLIB_REFERENCE.md)
+
+</div>
